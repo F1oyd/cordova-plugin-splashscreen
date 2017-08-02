@@ -39,7 +39,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.os.Build;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 
+import org.apache.cordova.LOG;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
@@ -270,10 +274,6 @@ public class SplashScreen extends CordovaPlugin {
 
         lastHideAfterDelay = hideAfterDelay;
 
-        // Prevent to show the splash dialog if the activity is in the process of finishing
-        if (cordova.getActivity().isFinishing()) {
-            return;
-        }
         // If the splash dialog is showing don't try to show it again
         if (splashDialog != null && splashDialog.isShowing()) {
             return;
@@ -364,7 +364,14 @@ public class SplashScreen extends CordovaPlugin {
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 progressBar.setLayoutParams(layoutParams);
-
+                
+                String splashScreenSpinnerColor = preferences.getString("SplashScreenSpinnerColor", null);
+                if (splashScreenSpinnerColor != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor(splashScreenSpinnerColor), PorterDuff.Mode.SRC_IN);
+                    }
+                }
+                
                 centeredLayout.addView(progressBar);
 
                 spinnerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
