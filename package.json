@@ -1,6 +1,6 @@
 {
   "name": "floydspace-cordova-plugin-splashscreen",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "Cordova Splashscreen Plugin",
   "types": "./types/index.d.ts",
   "cordova": {
