@@ -24,6 +24,11 @@
 
 #define kSplashScreenDurationDefault 3000.0f
 #define kFadeDurationDefault 500.0f
+#define UIColorFromRGB(rgbValue) \
+[UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+                green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
+                 blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
+                alpha:1.0]
 
 
 @implementation CDVSplashScreen
@@ -103,6 +108,16 @@
     parentView.userInteractionEnabled = NO;  // disable user interaction while splashscreen is shown
     _activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:topActivityIndicatorStyle];
     _activityView.center = CGPointMake(parentView.bounds.size.width / 2, (100 - splashScreenSpinnerBottom) * parentView.bounds.size.height / 100 );
+
+    NSString* splashScreenSpinnerColorHex = [self.commandDelegate.settings objectForKey:[@"SplashScreenSpinnerColor" lowercaseString]];
+    if (splashScreenSpinnerColorHex) {
+        unsigned splashScreenSpinnerColorInt = 0;
+        NSScanner *scanner = [NSScanner scannerWithString:splashScreenSpinnerColorHex];
+        [scanner setScanLocation:1]; // bypass '#' character
+        [scanner scanHexInt:&splashScreenSpinnerColorInt];
+        _activityView.color = UIColorFromRGB(splashScreenSpinnerColorInt);// [UIColor colorWithRed:1.00 green:0.67 blue:0.42 alpha:1.0];
+    }
+
     _activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin
         | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
     [_activityView startAnimating];
