@@ -41,11 +41,8 @@ Report issues with this plugin on the [Apache Cordova issue tracker][Apache Cord
 
 ## Supported Platforms
 
-- Amazon Fire OS
 - Android
-- BlackBerry 10
 - iOS
-- Windows Phone 7 and 8
 - Windows (`cordova-windows` version >= 4.4.0 is required)
 - Browser
 
@@ -353,12 +350,6 @@ projectRoot
     <splash src="res/screen/windows/splashscreenphone.png" width="1152" height="1920"/>
 </platform>-->
 
-<platform name="blackberry10">
-    <!-- Add a rim:splash element for each resolution and locale you wish -->
-    <!-- http://developer.blackberry.com/html5/documentation/rim_splash_element.html -->
-    <rim:splash src="res/screen/blackberry/splashscreen.png"/>
-</platform>
-
 <preference name="SplashScreenDelay" value="10000" />
 ```
 
@@ -436,6 +427,7 @@ In your `config.xml`, you can add the following preferences:
 ```xml
 <preference name="SplashMaintainAspectRatio" value="true|false" />
 <preference name="SplashShowOnlyFirstTime" value="true|false" />
+<preference name="SplashScreenSpinnerColor" value="white" />
 ```
 
 "SplashMaintainAspectRatio" preference is optional. If set to true, splash screen drawable is not stretched to fit screen, but instead simply "covers" the screen, like CSS "background-size:cover". This is very useful when splash screen images cannot be distorted in any way, for example when they contain scenery or text. This setting works best with images that have large margins (safe areas) that can be safely cropped on screens with different aspect ratios.
@@ -443,6 +435,8 @@ In your `config.xml`, you can add the following preferences:
 The plugin reloads splash drawable whenever orientation changes, so you can specify different drawables for portrait and landscape orientations.
 
 "SplashShowOnlyFirstTime" preference is also optional and defaults to `true`. When set to `true` splash screen will only appear on application launch. However, if you plan to use `navigator.app.exitApp()` to close application and force splash screen appear on next launch, you should set this property to `false` (this also applies to closing the App with Back button).
+
+"SplashScreenSpinnerColor" preference is also optional and is ignored when not set. Setting it to a valid color name or HEX color code will change the color of the spinner on Android 5.0+ devices.
 
 ### Browser Quirks
 
@@ -496,7 +490,7 @@ navigator.splashscreen.hide();
 ```
 
 
-### BlackBerry 10, WP8, iOS Quirk
+### iOS Quirk
 
 The `config.xml` file's `AutoHideSplashScreen` setting must be
 `false`. To delay hiding the splash screen for two seconds, add a
